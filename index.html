@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tặng Pé Híu nè 💙</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--gold:#ffd87a;--blue:#6aa8ff;--pink:#ff8fd0;--ink:#eef3ff;--glass:rgba(255,255,255,.09);--line:rgba(255,255,255,.22);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Be Vietnam Pro","Segoe UI",system-ui,sans-serif;color:var(--ink);background:#070b1e;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.aurora{position:fixed;inset:-20%;background:
+radial-gradient(40% 40% at 20% 30%,rgba(60,120,255,.55),transparent 70%),
+radial-gradient(35% 35% at 80% 20%,rgba(190,90,255,.45),transparent 70%),
+radial-gradient(45% 45% at 60% 85%,rgba(0,200,255,.35),transparent 70%);
+filter:blur(40px);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4%,-5%) rotate(8deg) scale(1.1)}}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#fx{z-index:5}
+.stage{position:relative;z-index:2;width:min(92vw,460px);text-align:center;perspective:1000px}
+.hint{margin:26px 0 0;font-size:16px;letter-spacing:.5px;opacity:.9;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.45}}
+/* Phong bì 3D */
+#env{position:relative;width:280px;height:190px;margin:0 auto;cursor:pointer;animation:float 3s ease-in-out infinite;transition:transform .8s .9s,opacity .6s .9s}
+@keyframes float{50%{transform:translateY(-14px) rotateZ(-1.5deg)}}
+#env .body,#env .flap,#env .pocket{position:absolute;left:0;width:100%}
+#env .body{inset:0;height:100%;border-radius:12px;background:linear-gradient(145deg,#7fb4ff,#3d6fe0);box-shadow:0 24px 60px rgba(60,120,255,.5),inset 0 0 0 1px var(--line)}
+#env .pocket{bottom:0;height:100%;border-radius:12px;background:linear-gradient(145deg,#a9ccff,#5b8cf0);clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:3}
+#env .flap{top:0;height:62%;background:linear-gradient(180deg,#c3dbff,#7aa9f7);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s ease;z-index:4;border-radius:12px 12px 0 0}
+#env .seal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:radial-gradient(circle at 30% 30%,#ffe9a8,#e2a93a);box-shadow:0 6px 18px rgba(0,0,0,.35);transition:opacity .3s}
+#env .letter{position:absolute;left:12px;right:12px;top:10px;bottom:10px;background:#fffdf5;border-radius:8px;z-index:2;transition:transform .8s .35s}
+#env.open .flap{transform:rotateX(180deg);z-index:1}
+#env.open .seal{opacity:0}
+#env.open .letter{transform:translateY(-70px)}
+#env.open{transform:translateY(60px) scale(.8);opacity:0}
+/* Thiệp kính mờ */
+#card{display:none;position:relative;padding:30px 24px 26px;border-radius:26px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 30px 80px rgba(0,0,0,.45);animation:pop .9s cubic-bezier(.2,1.3,.4,1) both;overflow:hidden}
+#card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--a,0deg),var(--blue),var(--pink),var(--gold),var(--blue));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite;pointer-events:none}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spin{to{--a:360deg}}
+@keyframes pop{from{transform:scale(.6) translateY(60px) rotateX(40deg);opacity:0}}
+.badge{display:inline-block;font-size:12px;font-weight:800;letter-spacing:3px;padding:5px 14px;border-radius:99px;color:#2a1b00;background:linear-gradient(90deg,var(--gold),#ffb347);box-shadow:0 0 20px rgba(255,200,90,.5)}
+.emoji{font-size:58px;margin:10px 0 0;filter:drop-shadow(0 0 18px rgba(106,168,255,.9));animation:float 3s ease-in-out infinite}
+h1{margin:6px 0 4px;font-family:Pacifico,cursive,sans-serif;font-weight:400;font-size:30px;line-height:1.25;background:linear-gradient(90deg,#9cc8ff,#ffd87a,#ff9fda,#9cc8ff);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:250% 0}}
+.to{margin:0 0 14px;font-size:18px;font-weight:600;color:var(--gold)}
+#msg{text-align:left;font-size:16.5px;line-height:1.75;min-height:190px;white-space:pre-wrap}
+#msg::after{content:"▍";color:var(--blue);animation:blink .8s steps(1) infinite}
+#msg.done::after{content:""}
+@keyframes blink{50%{opacity:0}}
+.from{margin-top:14px;text-align:right;font-family:Pacifico,cursive,sans-serif;font-size:18px;color:var(--pink);opacity:0;transform:translateY(10px);transition:all 1s}
+.from.show{opacity:1;transform:none}
+.btns{display:none;margin-top:16px;gap:10px;justify-content:center}
+.btns.show{display:flex}
+.btns button{font:inherit;font-weight:600;border:0;border-radius:99px;padding:10px 18px;color:#0b1330;background:linear-gradient(90deg,#9cc8ff,#c9b3ff);cursor:pointer;box-shadow:0 6px 20px rgba(106,168,255,.4);transition:transform .2s}
+.btns button:active{transform:scale(.94)}
+#music{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:9;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);color:#fff;font-size:20px;cursor:pointer;display:none}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
+<button id="music" title="Bật/tắt nhạc">🎵</button>
+
+<div class="stage">
+  <div id="wrap">
+    <div id="env">
+      <div class="body"></div><div class="letter"></div><div class="pocket"></div><div class="flap"></div><div class="seal">💙</div>
+    </div>
+    <p class="hint" id="hint">✨ Bạn có một lời chúc đặc biệt. Chạm để mở! ✨</p>
+  </div>
+  <div id="card">
+    <span class="badge">VIP ★ PRO</span>
+    <div class="emoji" id="emoji"></div>
+    <h1 id="title"></h1>
+    <p class="to" id="to"></p>
+    <div id="msg"></div>
+    <div class="from" id="from"></div>
+    <div class="btns" id="btns"><button id="again">🎆 Bắn pháo hoa</button></div>
+  </div>
+</div>
+<audio id="audio" loop></audio>
+
+<script>
+/* ============ SỬA Ở ĐÂY ============ */
+const CONFIG={
+  occasion:"Chúc mừng Ngày Quốc tế Đàn ông!",
+  emoji:"📐",
+  toName:"pé Híu",
+  fromName:"Cục dàng của pé",
+  message:`Hôm nay là Ngày Quốc tế Đàn ông, pé hãy nghỉ ngơi đi nhé!
+Chúc pé mỗi ngày đều là một vectơ cùng phương, cùng chiều với niềm vui, độ dài càng lớn càng tốt.
+Mong mọi bài toán đều ra đáp án đúng, và điểm số của pé luôn là một vectơ hướng lên.
+Và nhớ nha, pé không bao giờ là vectơ-không đâu, vì pé quan trọng lắm đó! 💙`,
+  music:""  // ví dụ "nhac.mp3"
+};
+/* =================================== */
+const $=id=>document.getElementById(id);
+const toName=new URLSearchParams(location.search).get("to")||CONFIG.toName;
+$("emoji").textContent=CONFIG.emoji;$("title").textContent=CONFIG.occasion;
+$("to").textContent="Gửi "+toName;$("from").textContent="— "+CONFIG.fromName;
+
+/* Nền: lưới Oxy + vectơ động + bụi sao */
+const bg=$("bg"),b=bg.getContext("2d");let W,H,dpr=Math.min(devicePixelRatio||1,2);
+function size(){W=innerWidth;H=innerHeight;for(const c of [bg,fx]){c.width=W*dpr;c.height=H*dpr}b.setTransform(dpr,0,0,dpr,0,0);x.setTransform(dpr,0,0,dpr,0,0)}
+const fx=$("fx"),x=fx.getContext("2d");size();addEventListener("resize",size);
+const vecs=Array.from({length:7},(_,i)=>({a:Math.random()*Math.PI*2,s:(Math.random()-.5)*.004,l:.18+Math.random()*.3,c:["#6aa8ff","#ff8fd0","#ffd87a"][i%3]}));
+const stars=Array.from({length:70},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.3,p:Math.random()*6}));
+function arrow(ox,oy,tx,ty,c){b.strokeStyle=b.fillStyle=c;b.lineWidth=2.2;b.shadowColor=c;b.shadowBlur=12;
+ b.beginPath();b.moveTo(ox,oy);b.lineTo(tx,ty);b.stroke();const an=Math.atan2(ty-oy,tx-ox);
+ b.beginPath();b.moveTo(tx,ty);b.lineTo(tx-12*Math.cos(an-.4),ty-12*Math.sin(an-.4));b.lineTo(tx-12*Math.cos(an+.4),ty-12*Math.sin(an+.4));b.fill();b.shadowBlur=0}
+function drawBg(t){b.clearRect(0,0,W,H);const g=48,cx=W/2,cy=H/2;
+ b.strokeStyle="rgba(150,190,255,.08)";b.lineWidth=1;b.beginPath();
+ for(let i=cx%g;i<W;i+=g){b.moveTo(i,0);b.lineTo(i,H)}for(let j=cy%g;j<H;j+=g){b.moveTo(0,j);b.lineTo(W,j)}b.stroke();
+ b.strokeStyle="rgba(190,215,255,.3)";b.beginPath();b.moveTo(0,cy);b.lineTo(W,cy);b.moveTo(cx,0);b.lineTo(cx,H);b.stroke();
+ b.fillStyle="rgba(200,220,255,.6)";b.font="14px serif";b.fillText("x",W-18,cy-8);b.fillText("y",cx+8,16);b.fillText("O",cx+6,cy+16);
+ const R=Math.min(W,H);for(const v of vecs){v.a+=v.s;const m=R*v.l*(1+.12*Math.sin(t/900+v.a*3));arrow(cx,cy,cx+m*Math.cos(v.a),cy-m*Math.sin(v.a),v.c)}
+ for(const s of stars){b.fillStyle=`rgba(255,255,255,${.35+.4*Math.sin(t/700+s.p)})`;b.beginPath();b.arc(s.x*W,s.y*H,s.r,0,7);b.fill()}}
+
+/* Confetti + pháo hoa */
+let ps=[];const cols=["#6aa8ff","#ff8fd0","#ffd87a","#9cffd8","#c9b3ff","#fff"];
+function burst(px,py,n=90){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*7;
+ ps.push({x:px,y:py,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3,g:.12,w:4+Math.random()*5,h:3+Math.random()*7,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],l:1,glyph:Math.random()<.12?["💙","✨","📐","💯","➡️"][i%5]:null})}}
+function rain(){for(let i=0;i<60;i++)ps.push({x:Math.random()*W,y:-20,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,g:.03,w:6,h:10,r:0,vr:.1,c:cols[i%6],l:1,glyph:null})}
+function drawFx(){x.clearRect(0,0,W,H);ps=ps.filter(p=>p.l>0&&p.y<H+30);
+ for(const p of ps){p.vx*=.992;p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.l-=.0035;x.save();x.globalAlpha=Math.max(p.l,0);x.translate(p.x,p.y);x.rotate(p.r);
+ if(p.glyph){x.font="22px serif";x.fillText(p.glyph,-11,8)}else{x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h)}x.restore()}}
+(function loop(t){drawBg(t);drawFx();requestAnimationFrame(loop)})(0);
+function show(){const sx=[.2,.5,.8,.35,.65];sx.forEach((f,i)=>setTimeout(()=>burst(W*f,H*(.25+Math.random()*.2)),i*250));rain()}
+
+/* Gõ chữ */
+function type(text,el,done){let i=0;(function step(){el.textContent=text.slice(0,++i);
+ if(i<text.length){const ch=text[i-1];setTimeout(step,ch==="."||ch==="!"||ch==="\n"?260:ch===","?140:38)}else{el.classList.add("done");done()}})()}
+
+/* Mở phong bì */
+let opened=false;
+$("env").addEventListener("click",()=>{if(opened)return;opened=true;$("env").classList.add("open");$("hint").style.display="none";
+ burst(W/2,H/2,60);
+ setTimeout(()=>{$("wrap").style.display="none";$("card").style.display="block";show();
+  type(CONFIG.message,$("msg"),()=>{$("from").classList.add("show");$("btns").classList.add("show");show()})},1500);
+ if(CONFIG.music){const a=$("audio"),m=$("music");a.src=CONFIG.music;a.play().catch(()=>{});m.style.display="block";m.onclick=()=>a.paused?a.play():a.pause()}});
+$("again").onclick=show;
+addEventListener("pointerdown",e=>{if(opened)burst(e.clientX,e.clientY,30)});
+</script>
+</body>
+</html>
