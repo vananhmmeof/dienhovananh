@@ -123,7 +123,21 @@ function drawBg(t){b.clearRect(0,0,W,H);const g=48,cx=W/2,cy=H/2;
 
 /* Confetti + pháo hoa */
 let ps=[];const cols=["#6aa8ff","#ff8fd0","#ffd87a","#9cffd8","#c9b3ff","#fff"];
-function burst(px,py,n=90){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*7;
+/* Tiếng pháo hoa (tạo bằng Web Audio, không cần file âm thanh) */
+let AC;
+function initAudio(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}}
+function noise(t,dur,pow,fType,f0,f1,vol){const len=Math.floor(AC.sampleRate*dur),buf=AC.createBuffer(1,len,AC.sampleRate),d=buf.getChannelData(0);
+ for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,pow);
+ const s=AC.createBufferSource();s.buffer=buf;const f=AC.createBiquadFilter();f.type=fType;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+ const g=AC.createGain();g.gain.value=vol;s.connect(f).connect(g).connect(AC.destination);s.start(t)}
+function boom(n){if(!AC)return;const t=AC.currentTime,big=n>=60,vol=big?.55:.2;
+ const o=AC.createOscillator(),og=AC.createGain();o.type="sine";
+ o.frequency.setValueAtTime(big?150:240,t);o.frequency.exponentialRampToValueAtTime(40,t+.35);
+ og.gain.setValueAtTime(vol,t);og.gain.exponentialRampToValueAtTime(.001,t+.45);
+ o.connect(og).connect(AC.destination);o.start(t);o.stop(t+.5);
+ noise(t,big?1.2:.4,big?2.5:4,"lowpass",big?2800:5000,300,vol);
+ if(big)for(let k=0;k<12;k++)noise(t+.2+Math.random()*1.1,.05,2,"highpass",3500,6000,.12)}
+function burst(px,py,n=90){boom(n);for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*7;
  ps.push({x:px,y:py,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3,g:.12,w:4+Math.random()*5,h:3+Math.random()*7,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],l:1,glyph:Math.random()<.12?["💙","✨","📐","💯","➡️"][i%5]:null})}}
 function rain(){for(let i=0;i<60;i++)ps.push({x:Math.random()*W,y:-20,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,g:.03,w:6,h:10,r:0,vr:.1,c:cols[i%6],l:1,glyph:null})}
 function drawFx(){x.clearRect(0,0,W,H);ps=ps.filter(p=>p.l>0&&p.y<H+30);
@@ -138,7 +152,7 @@ function type(text,el,done){let i=0;(function step(){el.textContent=text.slice(0
 
 /* Mở phong bì */
 let opened=false;
-$("env").addEventListener("click",()=>{if(opened)return;opened=true;$("env").classList.add("open");$("hint").style.display="none";
+$("env").addEventListener("click",()=>{if(opened)return;opened=true;initAudio();$("env").classList.add("open");$("hint").style.display="none";
  burst(W/2,H/2,60);
  setTimeout(()=>{$("wrap").style.display="none";$("card").style.display="block";show();
   type(CONFIG.message,$("msg"),()=>{$("from").classList.add("show");$("btns").classList.add("show");show()})},1500);
